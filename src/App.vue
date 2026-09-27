@@ -29,11 +29,22 @@ function updateRating(movieOrIdOrIndex, star) {
         :key="movie.id"
         class="bg-white rounded-lg overflow-hidden shadow-lg flex flex-col"
       >
-        <img
-          :src="movie.image"
-          :alt="movie.name"
-          class="w-full h-[520px] object-cover"
-        />
+        <div class="relative">
+          <img
+            :src="movie.image"
+            :alt="movie.name"
+            class="w-full h-[520px] object-cover"
+          />
+          <div class="absolute top-4 right-4 flex items-center justify-center">
+            <StarIcon
+              class="w-14 h-14"
+              :class="movie.rating ? 'text-yellow-500' : 'text-gray-500'"
+            />
+            <span class="absolute text-sm font-bold text-gray-900">
+              {{ movie.rating ? movie.rating : '-' }}
+            </span>
+          </div>
+        </div>
         <div class="p-6 flex flex-col flex-1 justify-between">
           <div>
             <h2 class="text-xl font-bold text-gray-900 mb-2">
