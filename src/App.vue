@@ -4,6 +4,19 @@ import { StarIcon } from "@heroicons/vue/24/solid";
 import { items } from "./movies.json";
 
 const movies = ref(items);
+
+function updateRating(movieOrIdOrIndex, star) {
+  if (typeof movieOrIdOrIndex === "object" && movieOrIdOrIndex !== null) {
+    movieOrIdOrIndex.rating = star;
+  } else if (typeof movieOrIdOrIndex === "number") {
+    const movie = movies.value.find((m) => m.id === movieOrIdOrIndex);
+    if (movie) {
+      movie.rating = star;
+    } else if (movies.value[movieOrIdOrIndex]) {
+      movies.value[movieOrIdOrIndex].rating = star;
+    }
+  }
+}
 </script>
 
 <template>
@@ -42,11 +55,19 @@ const movies = ref(items);
           <div class="flex items-center gap-2 text-sm text-gray-700">
             <span>Rating: ({{ movie.rating }}/5)</span>
             <div class="flex items-center gap-1">
-              <StarIcon
-                v-for="star in movie.rating"
+              <button
+                v-for="star in 5"
                 :key="star"
-                class="w-4 h-4 text-yellow-500"
-              />
+                type="button"
+                :disabled="movie.rating === star"
+                class="cursor-pointer disabled:cursor-not-allowed"
+                @click="updateRating(movie, star)"
+              >
+                <StarIcon
+                  class="w-4 h-4"
+                  :class="star <= movie.rating ? 'text-yellow-500' : 'text-gray-500'"
+                />
+              </button>
             </div>
           </div>
         </div>
